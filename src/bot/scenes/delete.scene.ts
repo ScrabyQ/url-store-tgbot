@@ -17,6 +17,11 @@ export class DeleteScene {
     private readonly uuidService: UuidService,
   ) {}
 
+  @Command(['start', 'deny', 'cancel', 'back'])
+  async returnToStartScene(@Ctx() ctx: Context) {
+    await ctx.scene.enter(START_SCENE);
+  }
+
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context): Promise<void> {
     await ctx.reply(requestToDelete);
@@ -39,11 +44,6 @@ export class DeleteScene {
     await this.urlService.deleteOne(url.id);
 
     await ctx.reply(successfullyDeleted);
-    await ctx.scene.enter(START_SCENE);
-  }
-
-  @Command('start')
-  async returnToStartScene(@Ctx() ctx: Context) {
     await ctx.scene.enter(START_SCENE);
   }
 

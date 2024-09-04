@@ -1,4 +1,4 @@
-import { Scene, SceneEnter, Ctx, On, Message } from 'nestjs-telegraf';
+import { Scene, SceneEnter, Ctx, On, Message, Command } from 'nestjs-telegraf';
 import { UuidService } from 'nestjs-uuid';
 import {
   requestLinkCode,
@@ -16,6 +16,11 @@ export class GetScene {
     private readonly uuidService: UuidService,
     private readonly urlService: UrlService,
   ) {}
+
+  @Command(['start', 'deny', 'cancel', 'back'])
+  async returnToStartScene(@Ctx() ctx: Context) {
+    await ctx.scene.enter(START_SCENE);
+  }
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context) {

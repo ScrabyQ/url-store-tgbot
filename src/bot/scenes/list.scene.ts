@@ -43,7 +43,7 @@ export class ListScene {
     await ctx.reply(
       `Доступные ссылки (${currentPage}/${totalPages}):\n\n${items
         .map((i) => `${i.description} - ${i.code}\n\n`)
-        .join('')}\n\nДля выхода введи команду /back`,
+        .join('')}\n\nДля выхода введи команду /cancel`,
       pageButtons({
         left: currentPage != 1,
         right: currentPage < totalPages,
