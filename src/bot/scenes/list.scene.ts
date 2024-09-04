@@ -20,7 +20,6 @@ interface IPagination {
 export class ListScene {
   private page = 1;
   private pageSize = BASE_PAGE_SIZE;
-  private urls: UrlEntity[];
 
   constructor(private readonly urlService: UrlService) {}
 
@@ -31,11 +30,8 @@ export class ListScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context) {
-    if (!this.urls) {
-      this.urls = await this.urlService.getAll(ctx.from.id);
-    }
-
-    const { items, currentPage, totalPages } = this.paginate(
+    const { items, currentPage, totalPages } = await this.paginate(
+      ctx.from.id,
       this.page,
       this.pageSize,
     );
@@ -65,12 +61,17 @@ export class ListScene {
     await ctx.scene.reenter();
   }
 
-  private paginate(page: number, pageSize: number): IPagination {
-    const totalItems = this.urls.length;
+  private async paginate(
+    owner: number,
+    page: number,
+    pageSize: number,
+  ): Promise<IPagination> {
+    const items = await this.urlService.getAll(owner);
+    const totalItems = items.length;
     const totalPages = Math.ceil(totalItems / pageSize);
     const currentPage = page > totalPages ? totalPages : page;
 
-    const paginatedItems = this.urls.slice(
+    const paginatedItems = items.slice(
       (currentPage - 1) * pageSize,
       currentPage * pageSize,
     );
