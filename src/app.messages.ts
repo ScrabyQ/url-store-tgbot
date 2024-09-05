@@ -36,3 +36,10 @@ export const deletableNotFound =
   'Не нашел у тебя такой ссылки. Попробуем ещё раз?';
 
 export const successfullyDeleted = 'Успешно удалено';
+
+export const availableUrls = ({ currentPage, totalPages, payload }) => {
+  return `Доступные ссылки (${currentPage}/${totalPages}):\n\n${payload}\n\nДля выхода введи команду /cancel`;
+};
+
+export const returnToMainMenu =
+  'Для возврата в главное меню воспольуйся командой /back';
