@@ -41,7 +41,7 @@ export class ListScene {
         .map((i) => `${i.description} - ${i.code}\n\n`)
         .join('')}\n\nДля выхода введи команду /cancel`,
       pageButtons({
-        left: currentPage != 1,
+        left: currentPage >= 2,
         right: currentPage < totalPages,
       }),
     );
