@@ -8,6 +8,8 @@ import { Context } from 'src/interfaces/context.interface';
 import { UrlEntity } from 'src/repository/entities/url.entity';
 import { UrlService } from 'src/repository/url/url.service';
 import { pageButtons } from 'src/app.buttons';
+import { availableUrls, returnToMainMenu } from 'src/app.messages';
+import { Markup } from 'telegraf';
 
 interface IPagination {
   items: UrlEntity[];
@@ -30,6 +32,8 @@ export class ListScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context) {
+    await ctx.reply(returnToMainMenu, Markup.removeKeyboard());
+
     const { items, currentPage, totalPages } = await this.paginate(
       ctx.from.id,
       this.page,
@@ -37,9 +41,11 @@ export class ListScene {
     );
 
     await ctx.reply(
-      `Доступные ссылки (${currentPage}/${totalPages}):\n\n${items
-        .map((i) => `${i.description} - ${i.code}\n\n`)
-        .join('')}\n\nДля выхода введи команду /cancel`,
+      availableUrls({
+        currentPage,
+        totalPages,
+        payload: items.map((i) => `${i.description} - ${i.code}\n\n`).join(''),
+      }),
       pageButtons({
         left: currentPage >= 2,
         right: currentPage < totalPages,
