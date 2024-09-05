@@ -7,8 +7,10 @@ import {
   requestToDelete,
   invalidCode,
   successfullyDeleted,
+  returnToMainMenu,
 } from 'src/app.messages';
 import { UrlService } from 'src/repository/url/url.service';
+import { Markup } from 'telegraf';
 
 @Scene(DELETE_LINK_SCENE)
 export class DeleteScene {
@@ -24,6 +26,8 @@ export class DeleteScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context): Promise<void> {
+    await ctx.reply(returnToMainMenu, Markup.removeKeyboard());
+
     await ctx.reply(requestToDelete);
   }
 

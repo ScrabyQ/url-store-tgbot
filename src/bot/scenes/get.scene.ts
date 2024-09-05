@@ -5,10 +5,12 @@ import {
   linkCodeNotFound,
   returnLink,
   invalidCode,
+  returnToMainMenu,
 } from 'src/app.messages';
 import { GET_LINK_SCENE, START_SCENE } from 'src/app.constants';
 import { Context } from 'src/interfaces/context.interface';
 import { UrlService } from 'src/repository/url/url.service';
+import { Markup } from 'telegraf';
 
 @Scene(GET_LINK_SCENE)
 export class GetScene {
@@ -24,6 +26,8 @@ export class GetScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context) {
+    await ctx.reply(returnToMainMenu, Markup.removeKeyboard());
+
     await ctx.reply(requestLinkCode);
   }
 
