@@ -6,9 +6,11 @@ import { BOT_NAME } from 'src/app.constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from 'src/repository/entities/url.entity';
 import { sessionMiddleware } from 'src/middlewares/session.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({}),
     TelegrafModule.forRootAsync({
       botName: BOT_NAME,
       useFactory: () => ({
